@@ -6,10 +6,11 @@ var helpers = require('yeoman-generator').test;
 
 describe('common', function () {
   var files = [
-    'editorconfig',
-    'gitattributes',
-    'gitignore',
-    'jshintrc'
+    '.editorconfig',
+    '.gitattributes',
+    '.gitignore',
+    '.jshintrc',
+    'test/.jshintrc'
   ];
 
   beforeEach(function (done) {
@@ -19,9 +20,7 @@ describe('common', function () {
   it('creates expected default files', function (done) {
     helpers.run(join(__dirname, '../app')).withOptions({'skip-messages': true})
     .on('end', function () {
-      assert.file(files.map(function (file) {
-        return '.' + file;
-      }));
+      assert.file(files);
       done();
     });
   });
@@ -32,12 +31,11 @@ describe('common', function () {
       editorconfig: false,
       gitattributes: false,
       gitignore: false,
-      jshintrc: false
+      jshintrc: false,
+      'test-jshintrc': false
     })
     .on('end', function () {
-      assert.noFile(files.map(function (file) {
-        return '.' + file;
-      }));
+      assert.noFile(files);
       done();
     });
   });
@@ -48,7 +46,8 @@ describe('common', function () {
       editorconfig: true,
       gitattributes: false,
       gitignore: true,
-      jshintrc: false
+      jshintrc: false,
+      'test-jshintrc': false
     })
     .on('end', function () {
       assert.file([
@@ -57,7 +56,8 @@ describe('common', function () {
       ]);
       assert.noFile([
           '.gitattributes',
-          '.jshintrc'
+          '.jshintrc',
+          'test/.jshintrc'
         ]);
       done();
     });
@@ -70,16 +70,17 @@ describe('common', function () {
         editorconfig: false,
         gitattributes: false,
         gitignore: false,
-        jshintrc: false
+        jshintrc: false,
+        'test-jshintrc': false
       };
-      options[file] = true;
+      options[file.replace('.', '').replace('/', '-')] = true;
 
       helpers.run(join(__dirname, '../app')).withOptions(options)
       .on('end', function () {
-        assert.file('.' + file);
+        assert.file(file);
         assert.noFile(files.map(function (assertFile) {
           if (assertFile !== file) {
-            return '.' + assertFile;
+            return assertFile;
           }
           return false;
         }));

@@ -21,7 +21,8 @@ Using options:
       jshintrc: false,
       gitignore: false,
       editorconfig: true,
-      gitattributes: true
+      gitattributes: true,
+      'test-jshintrc': false
     }
   });
 ```
@@ -38,7 +39,8 @@ module.exports = yeoman.generators.Base.extend({
         jshintrc: false,
         gitignore: false,
         editorconfig: true,
-        gitattributes: true
+        gitattributes: true,
+        'test-jshintrc': true
       }
     });
   },
@@ -61,19 +63,24 @@ Display the usage messages. Set to false for quieter output
 ### editorconfig
 Default: true
 
-Set to true to create a .editorconfig file or false to skip it
+Set to true to create a `.editorconfig` file or false to skip it
 
 ### gitattributes
 Default: true
 
-Set to true to create a .gitattributes file or false to skip it
+Set to true to create a `.gitattributes` file or false to skip it
 
 ### gitignore
 Default: true
 
-Set to true to create a .gitignore file or false to skip it
+Set to true to create a `.gitignore` file or false to skip it
 
 ### jshintrc
 Default: true
 
-Set to true to create a .jshintrc file or false to skip it
+Set to true to create a `.jshintrc` file or false to skip it
+
+### test-jshintrc
+Default: true
+
+Set to true to create a `test` folder and a .jshintrc file in that folder. False does not create the folder or file
