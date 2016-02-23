@@ -1,92 +1,78 @@
 'use strict';
-var join = require('path').join;
 
-var assert = require('yeoman-generator').assert;
-var helpers = require('yeoman-generator').test;
+const join = require('path').join;
+const assert = require('yeoman-assert');
+const helpers = require('yeoman-test');
 
-describe('common', function () {
+describe('common', () => {
   var files = [
     '.editorconfig',
     '.gitattributes',
-    '.gitignore',
-    '.jshintrc',
-    'test/.jshintrc'
+    '.gitignore'
   ];
 
-  beforeEach(function (done) {
-    helpers.testDirectory(join(__dirname, 'tmp'), done);
+  it('creates expected default files', done => {
+    helpers
+      .run(join(__dirname, '../generators/app'))
+      .on('end', () => {
+        assert.file(files);
+        done();
+      });
   });
 
-  it('creates expected default files', function (done) {
-    helpers.run(join(__dirname, '../app')).withOptions({'skip-messages': true})
-    .on('end', function () {
-      assert.file(files);
-      done();
-    });
+  it('creates no files', done => {
+    helpers
+      .run(join(__dirname, '../generators/app'))
+      .withOptions({
+        editorconfig: false,
+        gitattributes: false,
+        gitignore: false
+      })
+      .on('end', () => {
+        assert.noFile(files);
+        done();
+      });
   });
 
-  it('creates no files', function (done) {
-    helpers.run(join(__dirname, '../app')).withOptions({
-      'skip-messages': true,
-      editorconfig: false,
-      gitattributes: false,
-      gitignore: false,
-      jshintrc: false,
-      'test-jshintrc': false
-    })
-    .on('end', function () {
-      assert.noFile(files);
-      done();
-    });
-  });
-
-  it('creates selected files', function (done) {
-    helpers.run(join(__dirname, '../app')).withOptions({
-      'skip-messages': true,
-      editorconfig: true,
-      gitattributes: false,
-      gitignore: true,
-      jshintrc: false,
-      'test-jshintrc': false
-    })
-    .on('end', function () {
-      assert.file([
-        '.editorconfig',
-        '.gitignore'
-      ]);
-      assert.noFile([
-          '.gitattributes',
-          '.jshintrc',
-          'test/.jshintrc'
+  it('creates selected files', done => {
+    helpers
+      .run(join(__dirname, '../generators/app'))
+      .withOptions({
+        editorconfig: true,
+        gitattributes: false,
+        gitignore: true
+      })
+      .on('end', () => {
+        assert.file([
+          '.editorconfig',
+          '.gitignore'
         ]);
-      done();
-    });
+        assert.noFile([
+          '.gitattributes'
+        ]);
+        done();
+      });
   });
 
   files.forEach(function (file) {
-    it('creates ' + file + ' file only', function (done) {
+    it('creates ' + file + ' file only', done => {
       var options = {
-        'skip-messages': true,
         editorconfig: false,
         gitattributes: false,
-        gitignore: false,
-        jshintrc: false,
-        'test-jshintrc': false
+        gitignore: false
       };
-      options[file.replace('.', '').replace('/', '-')] = true;
+      options[file.replace('.', '')] = true;
 
-      helpers.run(join(__dirname, '../app')).withOptions(options)
-      .on('end', function () {
-        assert.file(file);
-        assert.noFile(files.map(function (assertFile) {
-          if (assertFile !== file) {
-            return assertFile;
-          }
-          return false;
-        }));
-        done();
-      });
+      helpers
+        .run(join(__dirname, '../generators/app'))
+        .withOptions(options)
+        .on('end', () => {
+          assert.file(file);
+          assert.noFile(files.map(assertFile => {
+            return assertFile !== file ? assertFile : false;
+          }));
+          done();
+        });
     });
-
   });
 });

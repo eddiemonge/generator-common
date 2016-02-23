@@ -3,34 +3,28 @@
   "version": "0.2.0",
   "description": "Yeoman generator",
   "license": "MIT",
-  "main": "app/index.js",
   "repository": "eddiemonge/generator-common",
-  "author": {
-    "name": "Eddie Monge",
-    "email": "",
-    "url": "https://github.com/eddiemonge"
-  },
+  "author": "Eddie Monge",
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=4.0.0"
   },
   "scripts": {
     "test": "mocha"
   },
   "files": [
-    "app"
+    "generators"
   ],
   "keywords": [
-    "yeoman-generator"
+    "yeoman-generator",
+    "common -files"
   ],
   "dependencies": {
-    "yeoman-generator": "^0.17.1",
-    "chalk": "^0.5.0",
-    "yosay": "^0.3.0"
+    "yeoman-generator": "^0.22.5",
+    "chalk": "^1.1.1"
   },
   "devDependencies": {
-    "mocha": "*"
-  },
-  "peerDependencies": {
-    "yo": ">=1.2.0"
+    "mocha": "*",
+    "yeoman-assert": "^2.1.1",
+    "yeoman-test": "^1.1.0"
   }
 }
